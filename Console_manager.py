@@ -4,6 +4,7 @@ import glob
 import sys
 import victory
 import use_functions
+import json
 
 print(__name__)
 
@@ -33,7 +34,12 @@ def view_dir():
     print(os.listdir())
 
 def view_folder():
-    print(list(os.walk(os.getcwd()))[0][1])
+    ll = list(os.walk(os.getcwd()))[0][1]
+    print(ll)
+    dd = glob.glob(os.path.join(os.getcwd(), '*.*'))
+    with open('listdir.txt', 'w') as f:
+        f.write(str(ll) + '\n')
+        f.write(str(dd))
 
 def view_file():
     print(glob.glob(os.path.join(os.getcwd(), '*.*')))
