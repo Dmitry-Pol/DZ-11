@@ -48,9 +48,16 @@ def fun_increase(schet):
 
 def fun_buy(schet, dic):
     in_cash = float(input('введите сумму покупки'))
-    if os.path.isfile('text.data'):
+    try:
+        os.path.isfile('text.data')
         with open('text.data', 'r') as f:
             schet = json.load(f)
+    except:
+        print('Файла для  загрузки счета нет')
+
+    # if os.path.isfile('text.data'):
+    #     with open('text.data', 'r') as f:
+    #         schet = json.load(f)
     if schet < in_cash:
         print('денег не хватает')
     else:

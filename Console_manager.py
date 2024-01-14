@@ -11,24 +11,21 @@ print(__name__)
 def add_folder():
     folder = input('введите имя папки')
     user_path = os.path.join(os.getcwd(), folder)
-    if os.path.exists(user_path):
-        print('Такая папка уже существует')
-    else:
-        os.mkdir(user_path)
+    print('Такая папка уже существует') if os.path.exists(user_path) else os.mkdir(user_path)
     pass
 
 def del_file_folder():
     folder = input('введите имя папки')
     user_path = os.path.join(os.getcwd(), folder)
-    if os.path.exists(user_path):
-        os.rmdir(user_path)
-    else:
-        print('Такой папки не существует')
+    print('Такой папки не существует') if os.path.exists(user_path) else os.rmdir(user_path)
     pass
 
 def copy_file_folder():
-    folder = input('введите имя копируемого файла')
-    shutil.copy(folder, folder.split('.')[0]+'_new.'+folder.split('.')[1])
+    try:
+        folder = input('введите имя копируемого файла')
+        shutil.copy(folder, folder.split('.')[0]+'_new.'+folder.split('.')[1])
+    except Exception:
+        print('Такого файла не существует')
 
 def view_dir():
     print(os.listdir())
@@ -37,9 +34,12 @@ def view_folder():
     ll = list(os.walk(os.getcwd()))[0][1]
     print(ll)
     dd = glob.glob(os.path.join(os.getcwd(), '*.*'))
-    with open('listdir.txt', 'w') as f:
-        f.write(str(ll) + '\n')
-        f.write(str(dd))
+    try:
+        with open('listdir.txt', 'w') as f:
+            f.write(str(ll) + '\n')
+            f.write(str(dd))
+    except IOError:
+        print('Файла "listdir.txt" нет в папке')
 
 def view_file():
     print(glob.glob(os.path.join(os.getcwd(), '*.*')))
