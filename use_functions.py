@@ -33,15 +33,31 @@
 
 Для реализации основного меню можно использовать пример ниже или написать свой
 """
+import json
+import os
+
 schet = 0
 dic = {}
+dic_new = {}
 def fun_increase(schet):
     in_cash = float(input('введите сумму'))
+    print(schet)
     schet += in_cash
+    print(schet)
     return schet
 
 def fun_buy(schet, dic):
     in_cash = float(input('введите сумму покупки'))
+    try:
+        os.path.isfile('text.data')
+        with open('text.data', 'r') as f:
+            schet = json.load(f)
+    except:
+        print('Файла для  загрузки счета нет')
+
+    # if os.path.isfile('text.data'):
+    #     with open('text.data', 'r') as f:
+    #         schet = json.load(f)
     if schet < in_cash:
         print('денег не хватает')
     else:
@@ -64,13 +80,29 @@ def bank():
         choice = input('Выберите пункт меню')
         global schet
         global dic
+        print(schet, os.path.isfile('text.data'))
         if choice == '1':
+            if os.path.isfile('text.data'):
+                with open('text.data', 'r') as f:
+                    schet = json.load(f)
+                    print('file', schet)
             schet = fun_increase(schet)
+            with open('text.data', 'w') as f:
+                print('2', schet)
+                json.dump(schet, f)
         elif choice == '2':
-            schet, dic = fun_buy(schet, dic)
+            if os.path.isfile('text_hist.data'):
+                with open('text_hist.data', 'r') as f:
+                    dic = json.load(f)
+            schet, dic_new = fun_buy(schet, dic)
+            with open('text_hist.data', 'w') as f:
+                print('2', dic)
+                json.dump(dic, f)
+
         elif choice == '3':
             fun_history(dic)
         elif choice == '4':
+
             break
         else:
             print('Неверный пункт меню')
